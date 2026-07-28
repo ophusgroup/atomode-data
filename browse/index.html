@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>atomode browser — browse</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <script>window.ATOMODE_DATA_BASE = "https://huggingface.co/datasets/ehrdt/atomode-db/resolve/main/";  /* deploy: HF resolve URL, trailing slash */</script>
+  <link rel="stylesheet" href="assets/css/styles.css?v=30">
+</head>
+<body>
+  <header class="site-header">
+    <a href="index.html" class="brand">atomode browser</a>
+    <nav>
+      <a href="index.html" class="active">Browse</a>
+      <a href="downloads.html">Downloads</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="caveat page" role="note">
+      <span class="caveat-icon">⚠</span>
+      <div><strong>MRO regime — known issue.</strong> The medium-range-order (MRO) structures were generated with an incorrect relative density (0.88 instead of the intended 0.92). All MRO data — structures, g(r)/ADF, energies and diffraction — is <strong>provisional and will be regenerated</strong>. The other five regimes are unaffected.</div>
+    </div>
+
+    <section class="filters">
+      <div class="filter-group">
+        <label for="f-composition">Composition contains</label>
+        <input id="f-composition" type="text" placeholder="e.g. BN, Fe, O">
+      </div>
+      <div class="filter-group">
+        <label for="f-mp_id">MP-ID contains</label>
+        <input id="f-mp_id" type="text" placeholder="e.g. mp-1639">
+      </div>
+      <div class="filter-group">
+        <label for="f-regime">Regime</label>
+        <select id="f-regime">
+          <option value="">all</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Density (at/Å³)</label>
+        <div class="filter-row-inline">
+          <input id="f-density_min" type="number" step="0.001" placeholder="min">
+          <input id="f-density_max" type="number" step="0.001" placeholder="max">
+        </div>
+      </div>
+      <div class="filter-group">
+        <label>N atoms</label>
+        <div class="filter-row-inline">
+          <input id="f-n_atoms_min" type="number" step="1" placeholder="min">
+          <input id="f-n_atoms_max" type="number" step="1" placeholder="max">
+        </div>
+      </div>
+      <div class="filter-actions">
+        <button id="reset-filters" class="secondary">reset</button>
+      </div>
+    </section>
+
+    <div class="statusbar">
+      <span class="count" id="status-count">loading…</span>
+      <span class="count">click any row for detail</span>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data">
+        <thead id="table-head"></thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+
+    <div id="pagination" class="pagination"></div>
+  </main>
+
+  <script type="module" src="assets/js/app.js?v=4"></script>
+</body>
+</html>

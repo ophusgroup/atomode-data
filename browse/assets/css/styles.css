@@ -1,0 +1,966 @@
+:root {
+  --bg:        #0f1115;
+  --panel:     #171a21;
+  --panel-2:   #1d2129;
+  --border:    #2a2f3a;
+  --text:      #e6e8ec;
+  --text-dim:  #9aa0aa;
+  --accent:    #4f8cff;
+  --accent-2:  #65d6ad;
+  --warn:      #f0b541;
+  --row-hover: #232834;
+  --mono:      ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --sans:      -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.45;
+  min-height: 100vh;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+header.site-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 12px 24px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+header .brand {
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.3px;
+  color: var(--text);
+  text-decoration: none;
+}
+header a.brand:hover { color: var(--accent); }
+
+header nav { display: flex; gap: 16px; }
+header nav a {
+  color: var(--text-dim);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+header nav a.active {
+  color: var(--text);
+  background: var(--panel-2);
+}
+
+main { padding: 12px 16px; max-width: 1500px; margin: 0 auto; }
+
+/* ── Filters ───────────────────────────────────────────── */
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  padding: 16px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.filter-group { display: flex; flex-direction: column; gap: 4px; }
+.filter-group label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-dim);
+}
+.filter-group input,
+.filter-group select {
+  box-sizing: border-box;   /* keep padding inside the width so min/max inputs don't overflow */
+  width: 100%;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 13px;
+}
+.filter-group input:focus,
+.filter-group select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.filter-row-inline { display: flex; gap: 6px; }
+.filter-row-inline input { flex: 1; }
+
+.filter-actions {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+button {
+  background: var(--accent);
+  color: white;
+  border: 0;
+  padding: 7px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+}
+button.secondary { background: var(--panel-2); color: var(--text); border: 1px solid var(--border); }
+button:hover { filter: brightness(1.1); }
+
+/* ── Status bar ────────────────────────────────────────── */
+.statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 4px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.statusbar .count { font-family: var(--mono); }
+
+/* ── Table ─────────────────────────────────────────────── */
+.table-wrap {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 12.5px;
+}
+table.data th, table.data td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+table.data th {
+  background: var(--panel-2);
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 11px;
+  cursor: pointer;
+  user-select: none;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+table.data th .sort-marker { color: var(--accent); margin-left: 4px; }
+table.data tbody tr { cursor: pointer; }
+table.data tbody tr:hover { background: var(--row-hover); }
+table.data td.num { text-align: right; }
+table.data td.regime-amorphous      { color: #ff8a80; }
+table.data td.regime-SRO            { color: #ffd54f; }
+table.data td.regime-MRO            { color: #80cbc4; }
+table.data td.regime-crystalline_30 { color: #82b1ff; }
+
+table.data th.no-sort { cursor: default; }
+table.data td.download-cell { text-align: center; padding: 4px 6px; width: 32px; }
+table.data a.row-download {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 1;
+}
+table.data a.row-download:hover {
+  background: var(--accent);
+  color: white;
+  text-decoration: none;
+}
+
+/* ── Pagination ────────────────────────────────────────── */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+.pagination button {
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+}
+.pagination button:disabled { opacity: 0.4; cursor: default; }
+.pagination .page-info { color: var(--text-dim); padding: 0 8px; }
+
+/* ── Loading / messages ────────────────────────────────── */
+.message {
+  padding: 24px;
+  text-align: center;
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 13px;
+}
+.message.error { color: var(--warn); }
+
+/* ── Caveat banner (e.g. MRO known-issue notice) ───────── */
+.caveat {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 0 0 14px;
+  padding: 11px 14px;
+  background: rgba(240, 181, 65, 0.10);
+  border: 1px solid rgba(240, 181, 65, 0.40);
+  border-left: 3px solid var(--warn);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.45;
+}
+.caveat .caveat-icon { color: var(--warn); font-size: 15px; flex: none; line-height: 1.4; }
+.caveat strong { color: var(--warn); }
+.caveat a { color: var(--warn); text-decoration: underline; }
+.caveat.page { margin: 14px 0; }
+/* MRO emphasis in the browse table + regime dl value */
+td.regime-MRO { color: var(--warn); }
+td.regime-MRO::after { content: " ⚠"; }
+.mro-flag { color: var(--warn); font-weight: 600; }
+
+/* ── Detail page ───────────────────────────────────────── */
+.detail-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 12px;
+}
+@media (max-width: 1000px) { .detail-layout { grid-template-columns: 1fr; } }
+
+.viewer-wrap {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;    /* so .viewer-gate can absolutely fill it */
+}
+#viewer-frame {
+  display: block;
+  width: 100%;
+  height: 360px;
+  border: 0;
+  background: #f7f8f5;   /* matches the atomode viewer background */
+}
+.viewer-3dmol {
+  position: relative;   /* 3Dmol positions its canvas absolutely inside */
+  width: 100%;
+  height: 360px;
+  background: #000;
+}
+/* Click gate overlays the iframe area only (not the controls strip
+   below it), so the "Load 3D viewer" button sits inside the viewer. */
+.viewer-gate {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 360px;         /* matches #viewer-frame height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7f8f5;
+  font-family: var(--mono);
+  z-index: 2;
+}
+.viewer-gate-btn {
+  padding: 10px 22px;
+  font-size: 13px;
+  font-family: var(--mono);
+  background: #1f4e79;
+  color: #fff;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.viewer-gate-btn:hover { background: #2a6299; }
+.viewer-gate-msg {
+  max-width: 480px;
+  padding: 18px 24px;
+  text-align: center;
+  color: #333;
+}
+.viewer-gate-msg .viewer-gate-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.viewer-gate-msg .viewer-gate-hint {
+  font-size: 12px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.viewer-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: var(--panel-2);
+  border-top: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--text-dim);
+}
+.viewer-controls .ctrl-label {
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-size: 10.5px;
+  color: var(--text-dim);
+}
+.viewer-controls .ctrl-divider {
+  width: 1px;
+  height: 14px;
+  background: var(--border);
+  margin: 0 4px;
+}
+.viewer-controls .seg-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Slice controls live inline in .viewer-controls — the .slice-only
+   items are hidden when the viewer is on the polyhedra iframe (which
+   manages its own scene and can't be resliced from the parent). */
+.viewer-controls.no-slice .slice-only { display: none; }
+
+.slice-range {
+  position: relative;
+  flex: 1 1 110px;
+  min-width: 90px;
+  max-width: 240px;
+  height: 20px;
+}
+/* Shared visible track drawn once as a pseudo-element behind both
+   inputs.  Each range input has a transparent track so we don't stack
+   two tracks (which was hiding the lo thumb behind the hi track). */
+.slice-range::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 3px; margin-top: -1.5px;
+  background: var(--border);
+  border-radius: 2px;
+}
+.slice-range input[type="range"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 20px;
+  margin: 0;
+  background: transparent;      /* transparent track ↑ the shared ::before shows */
+  pointer-events: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+/* Transparent tracks so ::before is what's visible. */
+.slice-range input[type="range"]::-webkit-slider-runnable-track {
+  height: 3px; background: transparent; border: 0;
+}
+.slice-range input[type="range"]::-moz-range-track {
+  height: 3px; background: transparent; border: 0;
+}
+/* Thumbs sit above the shared track, catch pointer events. */
+.slice-range input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--accent); border: 2px solid var(--panel-2);
+  margin-top: -5px;
+  cursor: pointer;
+  pointer-events: auto;
+  position: relative; z-index: 2;
+}
+.slice-range input[type="range"]::-moz-range-thumb {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--accent); border: 2px solid var(--panel-2);
+  cursor: pointer;
+  pointer-events: auto;
+  position: relative; z-index: 2;
+}
+.slice-readout {
+  min-width: 96px;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  text-align: right;
+  color: var(--text);
+  font-size: 11px;
+  font-family: var(--mono);
+}
+.viewer-controls .seg-btn {
+  padding: 3px 8px;
+  font-size: 11px;
+  font-family: var(--mono);
+  background: var(--panel);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+}
+.viewer-controls .seg-btn:hover { color: var(--text); }
+.viewer-controls .seg-btn.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+/* Axis currently clipping (may or may not be the edited axis) — green
+   underline distinguishes "actively slicing" from the blue "editing" fill. */
+.viewer-controls .seg-btn[data-slice-axis].clipped {
+  box-shadow: inset 0 -3px 0 var(--accent-2);
+}
+.viewer-controls input[type=range] { flex: 1; accent-color: var(--accent); }
+.viewer-controls .frame-label { min-width: 90px; color: var(--text-dim); }
+
+.meta-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.meta-panel h2 {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-family: var(--mono);
+}
+.meta-panel .subtitle {
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 11px;
+  margin-bottom: 10px;
+}
+.meta-panel dl {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 3px 10px;
+  font-family: var(--mono);
+  font-size: 12px;
+  margin: 0 0 10px;
+}
+.meta-panel dt { color: var(--text-dim); }
+.meta-panel dd { margin: 0; }
+.meta-panel .badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 11px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+.badge.regime { color: var(--text); }
+.download-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ── Plots (g(r) + ADF + g3) on the detail page ────────── */
+.plots-host {
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+.plots-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 8px;
+}
+.plot-pdf-cell     { grid-column: 1; grid-row: 1; }
+.plot-adf-cell     { grid-column: 2; grid-row: 1; }
+.plot-g3-cell      { grid-column: 1; grid-row: 2; }
+.plot-regimes-cell { grid-column: 2; grid-row: 2; }
+@media (max-width: 900px) {
+  .plots-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+  .plot-pdf-cell, .plot-adf-cell, .plot-g3-cell, .plot-regimes-cell {
+    grid-column: 1; grid-row: auto;
+  }
+}
+/* The inline regime cell uses the shared plot-row visual shell, so we
+   don't want the standalone regimes-host section rendering a second
+   time below the grid. */
+#regimes-host { display: none; }
+.plots-host .plot-row {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px;
+}
+.plots-host .plot { width: 100%; min-height: 200px; }
+.plots-host .plot-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  align-items: center;
+  padding: 4px 10px 8px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--text-dim);
+}
+.plots-host .plot-controls .ctrl-label {
+  color: var(--text-dim);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-right: 2px;
+}
+.plots-host .plot-controls label {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.plots-host .plot-controls input[type="checkbox"] {
+  margin: 0;
+  width: auto;
+  accent-color: var(--accent);
+}
+.plots-host .plot-controls input[type="number"] {
+  width: 70px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  margin-left: 4px;
+}
+.plots-host .plot-controls select {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  margin-left: 4px;
+}
+.plots-host .plot-controls .ctrl-divider {
+  width: 1px;
+  height: 14px;
+  background: var(--border);
+  margin: 0 6px;
+}
+.plots-host .plot-controls .shell-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px 8px;
+  flex-wrap: wrap;
+}
+.plots-host .plot-controls .seg-btn {
+  padding: 2px 8px;
+  font-size: 10.5px;
+  background: var(--panel);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--mono);
+}
+.plots-host .plot-controls .seg-btn:hover { color: var(--text); }
+.plots-host .plot-controls .shell-status {
+  font-size: 10.5px;
+  color: var(--text-dim);
+  font-family: var(--mono);
+  margin-left: 4px;
+}
+/* g(r) drag-to-set-shell affordance — apply to the whole plot since
+   fixedrange:true may suppress Plotly's .nsewdrag layer */
+#plot-pdf, #plot-pdf .nsewdrag { cursor: ew-resize !important; }
+#plot-pdf .modebar { cursor: default !important; }
+.plots-host .plots-empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--text-dim);
+  background: var(--panel);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+.plots-host .plots-empty code {
+  background: var(--panel-2);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+/* ── Diffraction-pattern viewer ──────────────────────── */
+.dps-host {
+  margin-top: 10px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+.dps-host:empty { display: none; }
+.dps-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.dps-header .dps-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-dim);
+}
+/* Fixed-width columns so neither the image-wrap nor the controls has
+   dead space around it — image sits flush against the controls, no
+   gap in the middle.  Both left-aligned; any leftover width is empty
+   whitespace on the right (fine, this section doesn't need to fill). */
+.dps-grid {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.dps-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 0 0 260px;
+}
+.dps-ctl-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+:is(.dps-thk-buttons,.dps-probe-buttons) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+:is(.dps-thk-buttons,.dps-probe-buttons) .seg-btn {
+  padding: 4px 10px;
+  font-size: 11px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--mono);
+  color: var(--text-dim);
+}
+:is(.dps-thk-buttons,.dps-probe-buttons) .seg-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+:is(.dps-thk-buttons,.dps-probe-buttons) .seg-btn:hover { color: var(--text); }
+.dps-probe-grid[data-square="true"] {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols, 6), 1fr);
+  gap: 2px;
+  max-width: 260px;
+  aspect-ratio: 1;
+}
+.dps-probe-cell {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  cursor: pointer;
+  padding: 0;
+  min-width: 0;
+  min-height: 0;
+}
+.dps-probe-cell:hover  { background: var(--row-hover); }
+.dps-probe-cell.active {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.dps-probe-grid[data-square="false"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.dps-probe-chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+/* Sized so wrap height ≈ controls-column height (thickness buttons +
+   probe-grid stack, ~375 px including the "g₃ shell" label + gap).
+   Keeps the DP square and the row visually balanced. */
+.dps-image-wrap {
+  background: #000;
+  border-radius: 6px;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto;
+  width: 348px;   /* 340 image + 2·4 px padding */
+  max-width: 100%;
+}
+.dps-image {
+  width: 340px;
+  height: 340px;
+  max-width: 100%;
+  image-rendering: pixelated;
+  background: #000;
+  border-radius: 4px;
+  display: block;
+}
+.dps-caption {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  padding: 6px 0 2px;
+}
+
+/* Sim params — collapsed by default; lives in the right column of the
+   DP grid and, when opened, fills that right region rather than pushing
+   the panel bottom down. */
+.dps-sim {
+  flex: 1 1 320px;
+  min-width: 260px;
+  align-self: stretch;
+  border-left: 1px dashed var(--border);
+  padding-left: 20px;
+}
+.dps-sim > summary {
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  user-select: none;
+}
+.dps-sim > summary:hover { color: var(--text); }
+.dps-sim-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px 20px;
+  margin-top: 10px;
+}
+.dps-sim-group { min-width: 0; }
+.dps-sim-title {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 2px;
+}
+.dps-sim-group dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 2px 10px;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 11px;
+}
+.dps-sim-group dt { color: var(--text-dim); }
+.dps-sim-group dd { margin: 0; color: var(--text); }
+.dps-sim-hint {
+  color: var(--text-dim);
+  font-size: 10px;
+  margin-left: 4px;
+}
+
+/* ── Regime navigator (E vs disorder regime) ───────────── */
+.regimes-host {
+  margin-top: 10px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+.regimes-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.regimes-title .regimes-mp {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-dim);
+}
+.regimes-plot { width: 100%; min-height: 200px; }
+.regimes-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.regime-chip {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel-2);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  text-decoration: none;
+  cursor: pointer;
+  min-width: 90px;
+}
+.regime-chip:hover {
+  background: var(--row-hover);
+  text-decoration: none;
+}
+.regime-chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white !important;
+}
+.regime-chip.active .rname, .regime-chip.active .rval { color: white !important; }
+.regime-chip .rname {
+  font-size: 11px;
+  letter-spacing: 0.3px;
+}
+.regime-chip .rval {
+  font-size: 13px;
+  color: var(--text);
+}
+
+/* ── Downloads page ────────────────────────────────────── */
+.downloads-summary {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+.downloads-summary h1 { margin: 0 0 12px; font-size: 22px; }
+.summary-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 12px 0 16px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.summary-stats .stat strong {
+  color: var(--accent-2);
+  font-size: 15px;
+  margin-right: 4px;
+}
+.summary-stats .error { color: var(--warn); }
+.summary-note {
+  color: var(--text-dim);
+  font-size: 13px;
+  margin: 0;
+  line-height: 1.55;
+}
+.summary-note code,
+.recipe code,
+.format-list code {
+  background: var(--panel-2);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+}
+.recipe {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 14px;
+}
+.recipe h2 { margin: 0 0 8px; font-size: 16px; font-family: var(--mono); }
+.recipe p  { margin: 4px 0 10px; color: var(--text-dim); font-size: 13px; line-height: 1.55; }
+.recipe pre.snippet {
+  background: #0a0c10;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  margin: 0;
+}
+.recipe pre.snippet code {
+  background: transparent;
+  padding: 0;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: #cfd6e0;
+  line-height: 1.55;
+  white-space: pre;
+}
+.recipe .snippet-note {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.format-list {
+  margin: 8px 0 0;
+  padding-left: 22px;
+  color: var(--text-dim);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* ── Placeholder page ──────────────────────────────────── */
+.placeholder {
+  max-width: 680px;
+  margin: 60px auto;
+  padding: 32px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.placeholder h1 { margin-top: 0; }
+.placeholder code {
+  background: var(--panel-2);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: var(--mono);
+  font-size: 13px;
+}
+
+/* ── Mobile phones (≤640px) ──────────────────────────────
+   Tablet stacking is already handled by the 900px/1000px queries above;
+   this tightens things for small phone screens (conference QR → phone). */
+@media (max-width: 640px) {
+  main { padding: 10px 12px; }
+  header.site-header { padding: 10px 14px; }
+  .filters { padding: 12px; gap: 10px; }
+
+  /* Browse table: hide the redundant ID column (= composition + mp-id +
+     regime + seed shown in other columns; row click still works via data-id),
+     let the rest scroll sideways, and tighten cells so more fits per screen. */
+  table.data th:first-child,
+  table.data td:first-child { display: none; }
+  .table-wrap { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+  table.data { font-size: 11.5px; }
+  table.data th, table.data td { padding: 6px 8px; white-space: nowrap; }
+
+  /* Structure detail: the viewer control strip wraps instead of overflowing;
+     the slice sliders take their own full row; slightly shorter 3D viewport. */
+  .viewer-controls { flex-wrap: wrap; row-gap: 6px; }
+  .slice-range { flex: 1 1 100%; max-width: none; }
+  #viewer-frame, .viewer-3dmol { height: 300px; }
+}

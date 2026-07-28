@@ -17,6 +17,7 @@ https://ophusgroup.github.io/atomode-data/trajectories/si_amorphous.html
 ## Layout
 
 ```
+browse/         interactive structure-database browser
 trajectories/   full shell-relaxation trajectory viewers
 fire/           FIRE-refinement movies + g3 viewers, by material
 mace/           MACE-MP0 refinement movies + g3 viewers, by material
@@ -25,6 +26,15 @@ overview/       rotating multi-cell overview grids
 g2_compare/     overlaid g(r) comparison viewers
 dftb/           DFTB+ refinement figures
 ```
+
+## Structure-database browser (`browse/`)
+
+<https://ophusgroup.github.io/atomode-data/browse/> — a browser for a large
+sample dataset of disordered atomic structures generated with the atomode pipeline. 
+Static HTML/JS: the metadata table (`browse/data/dataset.parquet`) is queried
+client-side with DuckDB-Wasm; per-structure files (3D `xyzq.gz`, g(r)/ADF
+`pdf.json`, ~36 GB) are fetched at runtime from the HuggingFace dataset
+[ehrdt/atomode-db](https://huggingface.co/datasets/ehrdt/atomode-db).
 
 ## Regenerating
 

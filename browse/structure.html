@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>atomode browser — structure</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <script>window.ATOMODE_DATA_BASE = "https://huggingface.co/datasets/ehrdt/atomode-db/resolve/main/";  /* deploy: HF resolve URL, trailing slash */</script>
+  <link rel="stylesheet" href="assets/css/styles.css?v=30">
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+  <!-- 3Dmol.js powers the atoms view (impostor spheres — handles 300k+
+       atoms fine).  Polyhedra view still uses the atomode Three.js
+       template loaded in an iframe. -->
+  <script src="https://3Dmol.org/build/3Dmol-min.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a href="index.html" class="brand">atomode browser</a>
+    <nav>
+      <a href="index.html">Browse</a>
+      <a href="downloads.html">Downloads</a>
+    </nav>
+  </header>
+
+  <main>
+    <div id="mro-banner"></div>
+    <div class="detail-layout">
+      <div>
+        <div class="viewer-wrap">
+          <iframe id="viewer-frame"
+                  title="Structure viewer"
+                  src="about:blank"></iframe>
+          <div id="viewer-3dmol" class="viewer-3dmol" style="display:none;"></div>
+          <div class="viewer-controls" id="viewer-controls">
+            <span class="ctrl-label">view</span>
+            <button class="seg-btn active" data-view="atoms">atoms</button>
+            <button class="seg-btn" data-view="poly">polyhedra</button>
+            <span class="ctrl-divider"></span>
+            <span class="ctrl-label">camera</span>
+            <button class="seg-btn active" data-camera="persp">perspective</button>
+            <button class="seg-btn" data-camera="ortho">orthographic</button>
+            <span class="ctrl-divider slice-only" id="viewer-slice"></span>
+            <span class="ctrl-label slice-only">slice</span>
+            <button class="seg-btn slice-only" data-slice-axis="x">x</button>
+            <button class="seg-btn slice-only" data-slice-axis="y">y</button>
+            <button class="seg-btn active slice-only" data-slice-axis="z">z</button>
+            <div class="slice-range slice-only">
+              <input type="range" id="slice-lo" min="0" max="100" step="0.5" value="0">
+              <input type="range" id="slice-hi" min="0" max="100" step="0.5" value="100">
+            </div>
+            <span class="slice-readout slice-only" id="slice-readout">0.0 – 100.0 Å</span>
+            <button class="seg-btn slice-only" id="slice-reset">reset</button>
+          </div>
+        </div>
+      </div>
+
+      <aside class="meta-panel">
+        <h2 id="title">…</h2>
+        <div id="subtitle" class="subtitle"></div>
+        <div id="badges" class="badges"></div>
+        <dl id="meta-dl"></dl>
+        <div class="download-row">
+          <a id="download-xyz" class="badge" href="#">↓ structure.xyz</a>
+          <a class="badge" href="index.html">← back to browse</a>
+        </div>
+        <p style="font-size:10px;color:var(--text-dim);margin:8px 0 0;white-space:nowrap;">
+          downloadable .xyz are display precision (rounded to ~0.005 Å)
+        </p>
+      </aside>
+    </div>
+
+    <section id="plots-host" class="plots-host"></section>
+
+    <section id="dps-host" class="dps-host"></section>
+
+    <section id="regimes-host" class="regimes-host">
+      <div class="regimes-title">
+        <span class="ctrl-label">MACE energy across disorder regimes</span>
+        <span class="regimes-mp"></span>
+      </div>
+      <div id="regimes-plot" class="regimes-plot"></div>
+    </section>
+  </main>
+
+  <script type="module" src="assets/js/structure.js?v=38"></script>
+</body>
+</html>

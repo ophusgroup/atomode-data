@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>atomode browser — downloads</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="assets/css/styles.css?v=30">
+</head>
+<body>
+  <header class="site-header">
+    <a href="index.html" class="brand">atomode browser</a>
+    <nav>
+      <a href="index.html">Browse</a>
+      <a href="downloads.html" class="active">Downloads</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="caveat page" role="note">
+      <span class="caveat-icon">⚠</span>
+      <div><strong>MRO regime — known issue.</strong> The medium-range-order (MRO) structures in this dataset were generated with an incorrect relative density (0.88 instead of the intended 0.92). All MRO data — structures, g(r)/ADF, energies and diffraction — is <strong>provisional and will be regenerated</strong>; exclude MRO or treat it as preliminary. The other five regimes are unaffected.</div>
+    </div>
+
+    <section class="downloads-summary">
+      <h1>Get the data</h1>
+      <p class="summary-note">
+        Explore the full dataset of disordered structures here in
+        the browser or download any individual structure directly. The full dataset is freely available upon request.
+      </p>
+    </section>
+
+    <section class="recipe">
+      <h2>Metadata table (CSV)</h2>
+      <p>Every structure's properties (composition, regime, cell, density, MACE energy and
+        forces, convergence, etc.) as one CSV.</p>
+      <pre class="snippet"><code id="r-csv"></code></pre>
+    </section>
+
+    <section class="recipe">
+      <h2>Individual structures</h2>
+      <p>Download single structures either through the <code>↓</code> download button in the <a href="index.html">browse table</a> has a <code>↓</code> download
+        link or on the structure's individual detail page.
+        Files are the structure's final relaxed snapshot in extended-XYZ format.</p>
+      <p class="snippet-note"><strong>Precision:</strong> in-browser downloads are rebuilt
+        from the display data, so positions are quantized to ≈0.005 Å. For better precision (float64), email
+        <a href="mailto:ehrdt@stanford.edu">ehrdt@stanford.edu</a>.</p>
+    </section>
+
+    <section class="recipe">
+      <h2>The complete dataset</h2>
+      <p>A <strong>public, citable download</strong> of the full corpus (exact float64
+        structures) is <strong>coming soon</strong>. For now, it is
+        <strong>freely available on request</strong> at: <a href="mailto:ehrdt@stanford.edu">ehrdt@stanford.edu</a>
+      </p>
+    </section>
+
+    <section class="recipe">
+      <h2>File format</h2>
+      <ul class="format-list">
+        <li><code>dataset.csv</code> — one row per structure;
+          composition, mp-id, regime, seed, cell, density, MACE energy/forces, convergence,
+          and the structure's download path.</li>
+        <li><code>&lt;structure_id&gt;.xyz</code> — the final relaxed structure in extended
+          XYZ. The comment line carries <code>Lattice="ax ay az bx by bz cx cy cz"</code> and
+          <code>Properties=species:S:1:pos:R:3</code>. Load with <code>ase.io.read(path)</code>.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    // Resolve against the page URL, not the bare host — the site is served
+    // from a subpath (…/disgen/, and …/atomode-data/browse/ after the move),
+    // so building from protocol+host alone drops the prefix and 404s.
+    const CSV_URL = new URL('data/dataset.csv', window.location.href).toString();
+    document.getElementById('r-csv').textContent = `wget ${CSV_URL}`;
+  </script>
+</body>
+</html>
